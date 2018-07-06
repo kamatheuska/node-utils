@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const parse = require('csv-parse/lib/sync')
 
 const { formatCsv } = require('../utils/index')
 
@@ -16,13 +15,9 @@ const readAndSetFile = (req, res, next) => {
 } 
 
 const csvToJSON = (req, res, next) => {
-  let records = formatCsv(req.csv)
+  req.results = formatCsv(req.csv)
 
   // set results on the request object:
-  req.results = parse(records, {
-    cast: true,
-    columns: true
-  })
   next()
 }
 

@@ -17,11 +17,14 @@ describe('>------>> CONVERT: \n', () => {
       .attach('data', __dirname + '/seed/data.csv')
       .expect(200)
       .expect((res) => {
-        let keys = Object.keys(res.body[0])
-        res.body.should.be.an('array')
-        res.body.length.should.equal(3)
-        res.body[0].should.be.an('object')
-        keys.length.should.equal(4)
+        let keys = Object.keys(res.body.collection[0])
+        let collection = res.body.collection
+
+        collection.should.be.an('array')
+        collection.length.should.equal(4)
+        collection[0].should.be.an('object')
+        collection[0].specs.color.should.be.an('string')
+        keys.length.should.equal(7)
       })
       .end(done)
   })
