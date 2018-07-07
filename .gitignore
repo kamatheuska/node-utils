@@ -1,11 +1,12 @@
 .DS_Store
 node_modules
 /dist
+server/tests/testSample
 
 # local env files
 .env.local
 .env.*.local
-
+server/config/config.json
 # Log files
 npm-debug.log*
 yarn-debug.log*
@@ -21,3 +22,4 @@ yarn-error.log*
 *.sw*
 *.csv
 *.vim
+*.sublime-project*

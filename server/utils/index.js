@@ -16,42 +16,42 @@ const mapDbModel = (obj) => {
     description: obj.NOMBRE,
     rates: {
       pvp: {
-        unit: obj.PRECIO ,
-        collection: 0
-      },
-      cost: 0
+        unit: obj.PRECIO
+       // collection: 0
+      }
+      //cost: 0
     },
     setup: { keywords },
     specs: {
       amount: {
         collection: {
           isCollection: false,
-          units: 0
+          //units: 0
         },
         units: obj['STOCK TOTAL']
       },
-      designer: {
-        id: 0,
-        notes: '',
-        name: '',
-        origin: ''
-      },
-      manufacturer: {
-        id: 0,
-        name: '',
-        origin: ''
-      },
-      measures: {
-        weight: 0,
-        height: 0,
-        long: 0,
-        width: 0
-      },
-      year: 0,
-      color: colorMatches,
-      odor: '',
-      country: '',
-      material: '',
+      // designer: {
+      //   id: 0,
+      //   notes: '',
+      //   name: '',
+      //   origin: ''
+      // },
+      // manufacturer: {
+      //   id: 0,
+      //   name: '',
+      //   origin: ''
+      // },
+      // measures: {
+      //   weight: 0,
+      //   height: 0,
+      //   long: 0,
+      //   width: 0
+      // },
+      // year: 0,
+      color: colorMatches
+      // odor: '',
+      // country: '',
+      // material: '',
     },
     created: Date.now()
   }  

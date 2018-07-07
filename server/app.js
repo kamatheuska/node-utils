@@ -1,11 +1,18 @@
+require('./config')
+
 const express = require('express')
 const path = require('path')
 const morgan = require('morgan') 
 const multer = require('multer')
+const bodyParser = require('body-parser')
 const moment = require('moment')
+
 const app = express()
+const router = express.Router()
 const dist = path.join(__dirname, '..', 'dist')
 const { csvToJSON, readAndSetFile  } = require('./middleware')
+const { mongoose } = require('./db/mongoose')
+const { Product } = require('./models/Product')
 
 
 // MULTIPART PARSING MIDDLEWARE
@@ -22,10 +29,14 @@ const upload = multer({ storage })
 
 // MIDDLEWARE
 
-app.use('/api/convert', upload.single('data'), readAndSetFile, csvToJSON)
+app.use('/api/convert', upload.single('data'))
+app.use('/api/convert', readAndSetFile)
+app.use('/api/convert', csvToJSON)
 app.use(express.static(dist))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'))
 }
 
@@ -37,8 +48,37 @@ app.get('/', (req, res) => {
 })
 
 app.post('/api/convert', (req, res) => {
-  let data = req.results
-  res.status(200).send(data)
+  let { collection } = req.results
+  Product.insertMany(collection)
+    .then((data) => {
+      res.status(200).send(data)
+    })
+    .catch((err) => {
+      res.status(400).send()
+    })
 })
+
+
+app.post('/products/add', (req, res) => {
+  let items = req.body
+  Product.insertMany(items)
+    .then((data) => {
+      res.status(200).send(data)
+    })
+    .catch((err) => {
+      res.status(400).send()
+    })
+})
+
+app.get('/products', (req, res) => {
+  Product.find()
+    .then((data) => {
+      res.status(200).send(data)
+    })
+    .catch((err) => {
+      res.status(400).send()
+    })
+})
+
 
 module.exports = { app }
