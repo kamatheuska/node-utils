@@ -22,4 +22,5 @@ yarn-error.log*
 *.sw*
 *.csv
 *.vim
-*.sublime-project*
+node-utils.sublime-workspace
+*sublime-project
