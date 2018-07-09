@@ -31,10 +31,10 @@ describe('>------>> CONVERT: \n', () => {
         let keys = Object.keys(res.body[0])
 
         res.body.should.be.an('array')
-        res.body.length.should.equal(4)
+        res.body.length.should.equal(6)
         res.body[0].should.be.an('object')
         res.body[0].specs.color.should.be.an('string')
-        keys.length.should.equal(8)
+        keys.length.should.equal(9)
       })
       .then(() => done())
       .catch(e => done(e))
@@ -74,7 +74,8 @@ describe('>------>> DATABASE: \n', () => {
     it('should create a new product in the db', (done) => {
       let item = {
         title: "ALAMBRE DE MARMOL",
-        model: 9998999888,
+        model: 999888,
+        description: 'ESTA es la MejOR DESCRIPCIOn de todas',
         rates: { pvp: { unit: 23 } },
         setup: { keywords: "ALAMBRE" },
         specs: { amount: { collection: { isCollection: false }}}
@@ -82,7 +83,7 @@ describe('>------>> DATABASE: \n', () => {
 
       request(app)
         .post('/products/add')
-        .send(item)
+        .send([ item ])
         .expect(200)
         .then((res) => {
           res.body.should.exist
@@ -126,6 +127,25 @@ describe('>------>> DATABASE: \n', () => {
         })
         .then(() => done())
         .catch(e => done(e))
+    });
+    
+    it('should get the products that match the one word query', (done) => {
+      
+      request(app)
+        .post('/products/query')
+        .send({ query: 'marron' })
+        .expect(200)
+        .expect((res) => {
+          res.body.should.exist
+          res.body.length.should.equal(1)
+          res.body[0].rates.pvp.unit.should.equal(1700)
+        })
+        .then(() => {
+          done()
+        })
+        .catch(err => {
+          done(err)
+        })
     });
   })
 })

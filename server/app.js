@@ -8,7 +8,6 @@ const bodyParser = require('body-parser')
 const moment = require('moment')
 
 const app = express()
-const router = express.Router()
 const dist = path.join(__dirname, '..', 'dist')
 const { csvToJSON, readAndSetFile  } = require('./middleware')
 const { mongoose } = require('./db/mongoose')
@@ -28,13 +27,13 @@ const upload = multer({ storage })
 
 
 // MIDDLEWARE
+app.use(express.static(dist))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/api/convert', upload.single('data'))
 app.use('/api/convert', readAndSetFile)
 app.use('/api/convert', csvToJSON)
-app.use(express.static(dist))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
 
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'))
@@ -70,6 +69,7 @@ app.post('/products/add', (req, res) => {
     })
 })
 
+// GET PRODUCTS
 app.get('/products', (req, res) => {
   Product.find()
     .then((data) => {
@@ -80,5 +80,19 @@ app.get('/products', (req, res) => {
     })
 })
 
-
+// QUERY ON DESCRIPTION
+app.post('/products/query', (req, res) => {
+  let query = req.body.query.toUpperCase()
+    .trim()
+    .split(' ')
+    .filter(word => word.length !== 0)
+    .join(' ')
+  Product.find( { $text: { $search: query  } } )
+    .then((data) => {
+      res.status(200).send(data)
+    })
+    .catch((err) => {
+      res.status(400).send(err)
+    })
+})
 module.exports = { app }

@@ -7,6 +7,12 @@ const ProductSchema = new mongoose.Schema({
     minlength: 6,
     required: true
   },
+  description: {
+    type: [String],
+    text: true,
+    minlength: 7,
+    required: true
+  },
   model: {
     type: Number,
     minlength: 6,
