@@ -6,8 +6,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "posttest": "eslint --ignore-path .gitignore .",
     "test:unit": "vue-cli-service test:unit",
-    "test": "mocha --watch server/tests/app.test.js",
+    "test": "eslint --ignore-path .gitignore .; mocha --watch server/tests/app.test.js",
     "start": "node server/server.js"
   },
   "dependencies": {
@@ -34,6 +35,12 @@
     "@vue/test-utils": "^1.0.0-beta.16",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.0.1",
+    "eslint": "^5.1.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
     "vue-template-compiler": "^2.5.16"
   },
   "browserslist": [
